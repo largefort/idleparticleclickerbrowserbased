@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ParticleClicker - Sci-Fi Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            height: 100%;
+            margin: 0;
+            background-color: #000022; /* Dark blue background */
+            color: #00ff00; /* Neon green text */
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden; /* Hide overflow to prevent scrollbars */
+        }
+        #game-container {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        #vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none; /* Allow clicks to pass through the overlay */
+            z-index: 3; /* Ensure the overlay is above the game container */
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .info {
+            position: absolute;
+            font-size: 18px;
+            text-shadow: 0 0 8px #00ff00; /* Neon green text shadow */
+        }
+        .info:nth-child(1) { top: 10px; }
+        .info:nth-child(2) { top: 40px; }
+        .info:nth-child(3) { top: 70px; }
+        .shop {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .shop button {
+            background: linear-gradient(145deg, #0055ff, #0022aa); /* Gradient button background */
+            color: #00ff00; /* Neon green text */
+            box-shadow: 0 4px #009900, 0 6px 20px rgba(0, 255, 0, 0.5);
+            border: none;
+            outline: 1px solid #00ff00;
+            outline-offset: -4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.1s ease-in-out;
+        }
+        .shop button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .shop button:hover {
+            background: linear-gradient(145deg, #0066ff, #0033cc); /* Gradient hover effect */
+            box-shadow: 0 5px #00cc00, 0 8px 25px rgba(0, 255, 0, 0.6);
+            transform: translateY(-2px);
+        }
+        .click-value {
+            position: absolute;
+            color: #00ff00; /* Neon green text */
+            font-size: 20px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(0);
+            text-shadow: 0 0 10px #00ff00; /* Neon green text shadow */
+        }
+        /* Disable text selection */
+        body, html {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+            touch-action: none; /* Disables pinch-to-zoom */
+        }
+        /* Version and copyright info */
+        .version-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            font-size: 10px; /* Smaller font size for better fit on mobile screens */
+            color: #00ff00; /* Neon green text */
+            z-index: 1000; /* Ensuring it stays on top of other elements */
+        }
+    </style>
+</head>
+<body>
+<audio autoplay loop>
+    <source src="alexander-nakarada-space-ambience.mp3" type="audio/mpeg">
+    Your browser does not support the audio element.
+</audio>
+<!-- Version and copyright credit -->
+<div class="version-info">
+    <div>1.0.0</div>
+    <div>10008</div>
+</div>
+
+<div id="particles-js"></div>
+<div id="game-container" onclick="displayClickValue(event)">
+    <div id="vignette-overlay"></div> <!-- Vignette overlay -->
+    <div class="info" id="score-display">Score: 0</div>
+    <div class="info" id="auto-score-display">Passive Points/Sec: 0</div>
+    <div class="info" id="click-power-display">Score Per Click: 1</div>
+    <div class="shop">
+        <button id="auto-generator" onclick="buyAutoGenerator(event)">Buy Auto-Generator (Cost: 100)</button>
+        <button id="click-upgrade" onclick="buyClickUpgrade(event)">Upgrade Click (Cost: 50)</button>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+<script src="particles.min.js"></script>
+<script src="js/particles.js"></script>
+<script src="js/particles-mobile.json"></script>
+<script src="js/index.js"></script>
+<script src="cordova.js"></script>
+<script>
+        let score = 0;
+        let passivePointsPerSecond = 0;
+        let clickValue = 1;
+
+        function formatNumber(num) {
+            if (num < 1000) return num.toString();
+            if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
+            if (num < 1000000000) return (num / 1000000).toFixed(1) + 'M';
+            if (num < 1000000000000) return (num / 1000000000).toFixed(1) + 'B';
+            return (num / 1000000000000).toFixed(1) + 'T';
+        }
+
+        function displayClickValue(event) {
+            increaseScoreByClick();
+            const x = event.clientX;
+            const y = event.clientY;
+            const clickValueElement = document.createElement('div');
+            clickValueElement.classList.add('click-value');
+            clickValueElement.textContent = `+${clickValue}`;
+            document.body.appendChild(clickValueElement);
+            clickValueElement.style.left = `${x}px`;
+            clickValueElement.style.top = `${y}px`;
+            requestAnimationFrame(() => {
+                clickValueElement.style.opacity = 1;
+                clickValueElement.style.transform = 'translateY(-50px)';
+            });
+            setTimeout(() => {
+                clickValueElement.remove();
+            }, 800);
+        }
+
+        function increaseScoreByClick() {
+            score += clickValue;
+            updateUI();
+            saveGame();
+        }
+
+        function buyAutoGenerator(event) {
+            event.stopPropagation();
+            if (score >= 100) {
+                score -= 100;
+                passivePointsPerSecond += 1;
+                updateUI();
+                saveGame();
+            }
+        }
+
+        function buyClickUpgrade(event) {
+            event.stopPropagation();
+            if (score >= 50) {
+                score -= 50;
+                clickValue += 1;
+                updateUI();
+                saveGame();
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('score-display').innerText = `Score: ${formatNumber(score)}`;
+            document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${passivePointsPerSecond}`;
+            document.getElementById('click-power-display').innerText = `Score Per Click: ${clickValue}`;
+            document.getElementById('auto-generator').disabled = score < 100;
+            document.getElementById('click-upgrade').disabled = score < 50;
+        }
+
+        function startAutoGeneration() {
+            setInterval(() => {
+                score += passivePointsPerSecond;
+                updateUI();
+                saveGame();
+            }, 1000);
+        }
+
+        function saveGame() {
+            const gameData = { score, passivePointsPerSecond, clickValue };
+            localStorage.setItem('particleClickerGame', JSON.stringify(gameData));
+        }
+
+        function loadGame() {
+            const savedGame = localStorage.getItem('particleClickerGame');
+            if (savedGame) {
+                const gameData = JSON.parse(savedGame);
+                score = gameData.score;
+                passivePointsPerSecond = gameData.passivePointsPerSecond;
+                clickValue = gameData.clickValue;
+                updateUI();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            loadGame();
+            updateUI();
+            startAutoGeneration();
+            particlesJS('particles-js', {
+                particles: {
+                    number: { value: 80, density: { enable: true, value_area: 800 } },
+                    color: { value: "#ffffff" },
+                    shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
+                    opacity: { value: 0.5, anim: { enable: false } },
+                    size: { value: 3, random: true, anim: { enable: false } },
+                    line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+                    move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } },
+                },
+                interactivity: {
+                    detect_on: "canvas",
+                    events: {
+                        onhover: { enable: true, mode: "repulse" },
+                        onclick: { enable: true, mode: "push" },
+                        resize: true
+                    },
+                    modes: {
+                        grab: { distance: 400, line_linked: { opacity: 1 } },
+                        bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
+                        repulse: { distance: 200, duration: 0.4 },
+                        push: { particles_nb: 4 },
+                        remove: { particles_nb: 2 }
+                    }
+                },
+                retina_detect: true
+            });
+        });
+    </script>
+</body>
+</html>
