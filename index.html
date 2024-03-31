@@ -129,6 +129,26 @@
     </div>
 </div>
 
+<!-- CrazyGames SDK initialization script -->
+<script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>
+<script>
+    // Initialize the CrazyGames SDK
+    CrazyGamesSDK.init({
+        game_id: 'YOUR_GAME_ID', // Replace 'YOUR_GAME_ID' with your actual game ID
+        session: {
+            token: 'YOUR_SESSION_TOKEN' // Replace 'YOUR_SESSION_TOKEN' with your actual session token
+        },
+        events: {
+            onStart: function() {
+                // Called when the game starts
+            },
+            onGameOver: function(score) {
+                // Called when the game is over, with the final score
+            }
+        }
+    });
+</script>
+
 <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
 <script src="particles.min.js"></script>
 <script src="js/particles.js"></script>
@@ -257,6 +277,6 @@
                 retina_detect: true
             });
         });
-    </script>
+</script>
 </body>
 </html>
