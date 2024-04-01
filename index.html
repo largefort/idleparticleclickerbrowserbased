@@ -104,6 +104,40 @@
             color: #00ff00; /* Neon green text */
             z-index: 1000; /* Ensuring it stays on top of other elements */
         }
+
+        /* Research Tree Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #222222;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #00ff00;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
@@ -126,10 +160,61 @@
     <div class="shop">
         <button id="auto-generator" onclick="buyAutoGenerator(event)">Buy Auto-Generator (Cost: 100)</button>
         <button id="click-upgrade" onclick="buyClickUpgrade(event)">Upgrade Click (Cost: 50)</button>
+        <button onclick="openResearchTree()">Research Tree</button>
     </div>
 </div>
 
-<!-- CrazyGames SDK initialization script -->
+<!-- Research Tree Modal -->
+<div id="research-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeResearchTree()">&times;</span>
+        <h2>Research Tree</h2>
+        <p>Click on the nodes to unlock various upgrades:</p>
+        <ul>
+            <li>
+                Improved Particle Detection
+                <button onclick="startResearch('improvedParticleDetection', 500)">Research (Cost: 500)</button>
+            </li>
+            <li>
+                Enhanced Particle Acceleration
+                <button onclick="startResearch('enhancedParticleAcceleration', 1000)">Research (Cost: 1000)</button>
+            </li>
+            <li>
+                Advanced Quantum Computing
+                <button onclick="startResearch('advancedQuantumComputing', 1500)">Research (Cost: 1500)</button>
+            </li>
+            <li>
+                Nano-Scale Engineering
+                <button onclick="startResearch('nanoScaleEngineering', 2000)">Research (Cost: 2000)</button>
+            </li>
+            <li>
+                Optimized Energy Transfer
+                <button onclick="startResearch('optimizedEnergyTransfer', 2500)">Research (Cost: 2500)</button>
+            </li>
+            <li>
+                Multi-Dimensional Analysis
+                <button onclick="startResearch('multiDimensionalAnalysis', 3000)">Research (Cost: 3000)</button>
+            </li>
+            <li>
+                Temporal Manipulation
+                <button onclick="startResearch('temporalManipulation', 3500)">Research (Cost: 3500)</button>
+            </li>
+            <li>
+                Transcendental Synthesis
+                <button onclick="startResearch('transcendentalSynthesis', 4000)">Research (Cost: 4000)</button>
+            </li>
+            <li>
+                Galactic Expansion
+                <button onclick="startResearch('galacticExpansion', 4500)">Research (Cost: 4500)</button>
+            </li>
+            <li>
+                Hyperspace Navigation
+                <button onclick="startResearch('hyperspaceNavigation', 5000)">Research (Cost: 5000)</button>
+            </li>
+        </ul>
+    </div>
+</div>
+
 <script src="https://sdk.crazygames.com/crazygames-sdk-v3.js"></script>
 <script>
     // Initialize the CrazyGames SDK
@@ -164,129 +249,6 @@
 <script src="js/particles.js"></script>
 <script src="js/particles-mobile.json"></script>
 <script src="js/index.js"></script>
-<script src="cordova.js"></script>
-<script>
-        let score = 0;
-        let passivePointsPerSecond = 0;
-        let clickValue = 1;
-
-        function formatNumber(num) {
-            if (num < 1000) return num.toString();
-            if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
-            if (num < 1000000000) return (num / 1000000).toFixed(1) + 'M';
-            if (num < 1000000000000) return (num / 1000000000).toFixed(1) + 'B';
-            return (num / 1000000000000).toFixed(1) + 'T';
-        }
-
-        function displayClickValue(event) {
-            increaseScoreByClick();
-            const x = event.clientX;
-            const y = event.clientY;
-            const clickValueElement = document.createElement('div');
-            clickValueElement.classList.add('click-value');
-            clickValueElement.textContent = `+${clickValue}`;
-            document.body.appendChild(clickValueElement);
-            clickValueElement.style.left = `${x}px`;
-            clickValueElement.style.top = `${y}px`;
-            requestAnimationFrame(() => {
-                clickValueElement.style.opacity = 1;
-                clickValueElement.style.transform = 'translateY(-50px)';
-            });
-            setTimeout(() => {
-                clickValueElement.remove();
-            }, 800);
-        }
-
-        function increaseScoreByClick() {
-            score += clickValue;
-            updateUI();
-            saveGame();
-        }
-
-        function buyAutoGenerator(event) {
-            event.stopPropagation();
-            if (score >= 100) {
-                score -= 100;
-                passivePointsPerSecond += 1;
-                updateUI();
-                saveGame();
-            }
-        }
-
-        function buyClickUpgrade(event) {
-            event.stopPropagation();
-            if (score >= 50) {
-                score -= 50;
-                clickValue += 1;
-                updateUI();
-                saveGame();
-            }
-        }
-
-        function updateUI() {
-            document.getElementById('score-display').innerText = `Score: ${formatNumber(score)}`;
-            document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${passivePointsPerSecond}`;
-            document.getElementById('click-power-display').innerText = `Score Per Click: ${clickValue}`;
-            document.getElementById('auto-generator').disabled = score < 100;
-            document.getElementById('click-upgrade').disabled = score < 50;
-        }
-
-        function startAutoGeneration() {
-            setInterval(() => {
-                score += passivePointsPerSecond;
-                updateUI();
-                saveGame();
-            }, 1000);
-        }
-
-        function saveGame() {
-            const gameData = { score, passivePointsPerSecond, clickValue };
-            localStorage.setItem('particleClickerGame', JSON.stringify(gameData));
-        }
-
-        function loadGame() {
-            const savedGame = localStorage.getItem('particleClickerGame');
-            if (savedGame) {
-                const gameData = JSON.parse(savedGame);
-                score = gameData.score;
-                passivePointsPerSecond = gameData.passivePointsPerSecond;
-                clickValue = gameData.clickValue;
-                updateUI();
-            }
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            loadGame();
-            updateUI();
-            startAutoGeneration();
-            particlesJS('particles-js', {
-                particles: {
-                    number: { value: 80, density: { enable: true, value_area: 800 } },
-                    color: { value: "#ffffff" },
-                    shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
-                    opacity: { value: 0.5, anim: { enable: false } },
-                    size: { value: 3, random: true, anim: { enable: false } },
-                    line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
-                    move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } },
-                },
-                interactivity: {
-                    detect_on: "canvas",
-                    events: {
-                        onhover: { enable: true, mode: "repulse" },
-                        onclick: { enable: true, mode: "push" },
-                        resize: true
-                    },
-                    modes: {
-                        grab: { distance: 400, line_linked: { opacity: 1 } },
-                        bubble: { distance: 400, size: 40, duration: 2, opacity: 8, speed: 3 },
-                        repulse: { distance: 200, duration: 0.4 },
-                        push: { particles_nb: 4 },
-                        remove: { particles_nb: 2 }
-                    }
-                },
-                retina_detect: true
-            });
-        });
-</script>
+<script src="script.js"></script>
 </body>
 </html>
