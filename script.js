@@ -2,6 +2,20 @@ let score = 0;
 let passivePointsPerSecond = 0;
 let clickValue = 1;
 
+// Define research nodes
+const researchNodes = {
+    improvedParticleDetection: { name: 'Improved Particle Detection', cost: 500 },
+    enhancedParticleAcceleration: { name: 'Enhanced Particle Acceleration', cost: 1000 },
+    advancedQuantumComputing: { name: 'Advanced Quantum Computing', cost: 1500 },
+    nanoScaleEngineering: { name: 'Nano-Scale Engineering', cost: 2000 },
+    optimizedEnergyTransfer: { name: 'Optimized Energy Transfer', cost: 2500 },
+    multiDimensionalAnalysis: { name: 'Multi-Dimensional Analysis', cost: 3000 },
+    temporalManipulation: { name: 'Temporal Manipulation', cost: 3500 },
+    transcendentalSynthesis: { name: 'Transcendental Synthesis', cost: 4000 },
+    galacticExpansion: { name: 'Galactic Expansion', cost: 4500 },
+    hyperspaceNavigation: { name: 'Hyperspace Navigation', cost: 5000 }
+};
+
 function formatNumber(num) {
     if (num < 1000) return num.toString();
     if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
@@ -55,6 +69,72 @@ function buyClickUpgrade(event) {
     }
 }
 
+function openResearchTree() {
+    document.getElementById('research-modal').style.display = 'block';
+}
+
+function closeResearchTree() {
+    document.getElementById('research-modal').style.display = 'none';
+}
+
+function startResearch(nodeName, nodeCost) {
+    if (score >= nodeCost) {
+        score -= nodeCost;
+        // Apply research effect based on node name
+        applyResearchEffect(nodeName);
+        console.log(`Researching ${researchNodes[nodeName].name}`);
+        updateUI();
+        saveGame();
+    } else {
+        console.log('Insufficient score to start research');
+    }
+}
+
+function applyResearchEffect(nodeName) {
+    // Placeholder research effects
+    switch (nodeName) {
+        case 'improvedParticleDetection':
+            passivePointsPerSecond += 2;
+            break;
+        case 'enhancedParticleAcceleration':
+            clickValue += 2;
+            break;
+        case 'advancedQuantumComputing':
+            score *= 2;
+            break;
+        case 'nanoScaleEngineering':
+            passivePointsPerSecond += 5;
+            clickValue += 5;
+            break;
+        case 'optimizedEnergyTransfer':
+            passivePointsPerSecond += 10;
+            clickValue += 10;
+            break;
+        case 'multiDimensionalAnalysis':
+            passivePointsPerSecond += 20;
+            clickValue += 20;
+            break;
+        case 'temporalManipulation':
+            passivePointsPerSecond += 50;
+            clickValue += 50;
+            break;
+        case 'transcendentalSynthesis':
+            passivePointsPerSecond += 100;
+            clickValue += 100;
+            break;
+        case 'galacticExpansion':
+            passivePointsPerSecond += 200;
+            clickValue += 200;
+            break;
+        case 'hyperspaceNavigation':
+            passivePointsPerSecond += 500;
+            clickValue += 500;
+            break;
+        default:
+            break;
+    }
+}
+
 function updateUI() {
     document.getElementById('score-display').innerText = `Score: ${formatNumber(score)}`;
     document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${passivePointsPerSecond}`;
@@ -84,54 +164,6 @@ function loadGame() {
         passivePointsPerSecond = gameData.passivePointsPerSecond;
         clickValue = gameData.clickValue;
         updateUI();
-    }
-}
-
-function startResearch(techName, cost) {
-    if (score >= cost) {
-        score -= cost;
-        console.log(`Researching ${techName}...`);
-        switch (techName) {
-            case "Improved Click Power":
-                clickValue *= 2; // Example: Double the click value
-                break;
-            case "Advanced Auto-Generator":
-                passivePointsPerSecond += 5; // Example: Increase passive points per second
-                break;
-            case "Particle Accelerator":
-                clickValue += 5; // Example: Increase click value
-                break;
-            case "Quantum Entanglement":
-                passivePointsPerSecond += 10; // Example: Increase passive points per second
-                break;
-            case "Nanotechnology":
-                passivePointsPerSecond += 20; // Example: Increase passive points per second
-                break;
-            case "Fusion Reactor":
-                clickValue += 10; // Example: Increase click value
-                break;
-            case "Temporal Distortion":
-                passivePointsPerSecond += 50; // Example: Increase passive points per second
-                break;
-            case "Dark Matter Manipulation":
-                clickValue += 20; // Example: Increase click value
-                break;
-            case "Antimatter Annihilation":
-                passivePointsPerSecond += 100; // Example: Increase passive points per second
-                break;
-            case "Quantum Computing":
-                clickValue += 50; // Example: Increase click value
-                break;
-            case "Interdimensional Rift":
-                passivePointsPerSecond += 200; // Example: Increase passive points per second
-                break;
-            default:
-                break;
-        }
-        updateUI();
-        saveGame();
-    } else {
-        alert("Insufficient score to start research.");
     }
 }
 
