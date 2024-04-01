@@ -1,38 +1,136 @@
-/* Research Tree Modal */
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgb(0,0,0);
-    background-color: rgba(0,0,0,0.4);
-    padding-top: 60px;
-}
-.modal-content {
-    background-color: #222222;
-    margin: 5% auto;
-    padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
-}
-.close {
-    color: #00ff00;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-}
-.close:hover,
-.close:focus {
-    color: #fff;
-    text-decoration: none;
-    cursor: pointer;
-}
+    body, html {
+            height: 100%;
+            margin: 0;
+            background-color: #000022; /* Dark blue background */
+            color: #00ff00; /* Neon green text */
+            font-family: 'Orbitron', sans-serif;
+            overflow: hidden; /* Hide overflow to prevent scrollbars */
+        }
+        #game-container {
+            height: 100vh;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 2;
+        }
+        #vignette-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: radial-gradient(ellipse at center, rgba(0,0,0,0) 0%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.6) 100%);
+            pointer-events: none; /* Allow clicks to pass through the overlay */
+            z-index: 3; /* Ensure the overlay is above the game container */
+        }
+        #particles-js {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+        }
+        .info {
+            position: absolute;
+            font-size: 18px;
+            text-shadow: 0 0 8px #00ff00; /* Neon green text shadow */
+        }
+        .info:nth-child(1) { top: 10px; }
+        .info:nth-child(2) { top: 40px; }
+        .info:nth-child(3) { top: 70px; }
+        .info:nth-child(4) { top: 100px; } /* New style for Score Per Click */
+        .shop {
+            position: absolute;
+            bottom: 20px;
+            width: 100%;
+            text-align: center;
+        }
+        .shop button {
+            background: linear-gradient(145deg, #0055ff, #0022aa); /* Gradient button background */
+            color: #00ff00; /* Neon green text */
+            box-shadow: 0 4px #009900, 0 6px 20px rgba(0, 255, 0, 0.5);
+            border: none;
+            outline: 1px solid #00ff00;
+            outline-offset: -4px;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.1s ease-in-out;
+        }
+        .shop button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+        .shop button:hover {
+            background: linear-gradient(145deg, #0066ff, #0033cc); /* Gradient hover effect */
+            box-shadow: 0 5px #00cc00, 0 8px 25px rgba(0, 255, 0, 0.6);
+            transform: translateY(-2px);
+        }
+        .click-value {
+            position: absolute;
+            color: #00ff00; /* Neon green text */
+            font-size: 20px;
+            pointer-events: none;
+            opacity: 0;
+            transition: opacity 0.8s ease, transform 0.8s ease;
+            transform: translateY(0);
+            text-shadow: 0 0 10px #00ff00; /* Neon green text shadow */
+        }
+        /* Disable text selection */
+        body, html {
+            -webkit-user-select: none; /* Safari */
+            -moz-user-select: none; /* Firefox */
+            -ms-user-select: none; /* IE10+/Edge */
+            user-select: none; /* Standard */
+            touch-action: none; /* Disables pinch-to-zoom */
+        }
+        /* Version and copyright info */
+        .version-info {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            text-align: right;
+            font-size: 10px; /* Smaller font size for better fit on mobile screens */
+            color: #00ff00; /* Neon green text */
+            z-index: 1000; /* Ensuring it stays on top of other elements */
+        }
 
-/* Research Tree Modal Button Styles */
+        /* Research Tree Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #222222;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #00ff00;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: #fff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+/* CSS for the research tree modal buttons */
 .modal-button {
     background: linear-gradient(145deg, #00ff00, #00ff00); /* Neon gradient button background */
     color: #000022; /* Dark blue text */
