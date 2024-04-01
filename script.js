@@ -55,6 +55,38 @@ function buyClickUpgrade(event) {
     }
 }
 
+function updateUI() {
+    document.getElementById('score-display').innerText = `Score: ${formatNumber(score)}`;
+    document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${passivePointsPerSecond}`;
+    document.getElementById('click-power-display').innerText = `Score Per Click: ${clickValue}`;
+    document.getElementById('auto-generator').disabled = score < 100;
+    document.getElementById('click-upgrade').disabled = score < 50;
+}
+
+function startAutoGeneration() {
+    setInterval(() => {
+        score += passivePointsPerSecond;
+        updateUI();
+        saveGame();
+    }, 1000);
+}
+
+function saveGame() {
+    const gameData = { score, passivePointsPerSecond, clickValue };
+    localStorage.setItem('particleClickerGame', JSON.stringify(gameData));
+}
+
+function loadGame() {
+    const savedGame = localStorage.getItem('particleClickerGame');
+    if (savedGame) {
+        const gameData = JSON.parse(savedGame);
+        score = gameData.score;
+        passivePointsPerSecond = gameData.passivePointsPerSecond;
+        clickValue = gameData.clickValue;
+        updateUI();
+    }
+}
+
 function startResearch(techName, cost) {
     if (score >= cost) {
         score -= cost;
@@ -103,39 +135,7 @@ function startResearch(techName, cost) {
     }
 }
 
-function updateUI() {
-    document.getElementById('score-display').innerText = `Score: ${formatNumber(score)}`;
-    document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${passivePointsPerSecond}`;
-    document.getElementById('click-power-display').innerText = `Score Per Click: ${clickValue}`;
-    document.getElementById('auto-generator').disabled = score < 100;
-    document.getElementById('click-upgrade').disabled = score < 50;
-}
-
-function startAutoGeneration() {
-    setInterval(() => {
-        score += passivePointsPerSecond;
-        updateUI();
-        saveGame();
-    }, 1000);
-}
-
-function saveGame() {
-    const gameData = { score, passivePointsPerSecond, clickValue };
-    localStorage.setItem('particleClickerGame', JSON.stringify(gameData));
-}
-
-function loadGame() {
-    const savedGame = localStorage.getItem('particleClickerGame');
-    if (savedGame) {
-        const gameData = JSON.parse(savedGame);
-        score = gameData.score;
-        passivePointsPerSecond = gameData.passivePointsPerSecond;
-        clickValue = gameData.clickValue;
-        updateUI();
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
     loadGame();
     updateUI();
     startAutoGeneration();
