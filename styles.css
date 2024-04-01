@@ -1,25 +1,25 @@
- /* New research button styles */
-        .research-button {
-            background: linear-gradient(145deg, #0055ff, #0022aa); /* Gradient button background */
-            color: #00ff00; /* Neon green text */
-            box-shadow: 0 4px #009900, 0 6px 20px rgba(0, 255, 0, 0.5);
-            border: none;
-            outline: 1px solid #00ff00;
-            outline-offset: -4px;
-            padding: 10px 20px;
-            font-size: 16px;
-            cursor: pointer;
-            margin: 5px;
-            transition: transform 0.1s ease-in-out;
-        }
+/* CSS for the research tree modal buttons */
+.modal-button {
+    background: linear-gradient(145deg, #00ff00, #00ff00); /* Neon gradient button background */
+    color: #000022; /* Dark blue text */
+    box-shadow: 0 4px #009900, 0 6px 20px rgba(0, 255, 0, 0.5);
+    border: none;
+    outline: 1px solid #00ff00;
+    outline-offset: -4px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    margin: 5px;
+    transition: transform 0.1s ease-in-out;
+}
 
-        .research-button:disabled {
-            opacity: 0.5;
-            cursor: not-allowed;
-        }
+.modal-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
 
-        .research-button:hover {
-            background: linear-gradient(145deg, #0066ff, #0033cc); /* Gradient hover effect */
-            box-shadow: 0 5px #00cc00, 0 8px 25px rgba(0, 255, 0, 0.6);
-            transform: translateY(-2px);
-        }
+.modal-button:hover {
+    background: linear-gradient(145deg, #00ff44, #00cc22); /* Neon gradient hover effect */
+    box-shadow: 0 5px #00cc00, 0 8px 25px rgba(0, 255, 0, 0.6);
+    transform: translateY(-2px);
+}
