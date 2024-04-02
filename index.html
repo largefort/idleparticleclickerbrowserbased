@@ -4,11 +4,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ParticleClicker - Sci-Fi Edition</title>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
-    <head>
     <link rel="stylesheet" type="text/css" href="styles.css">
-    <link rel="stylesheet" type="text/css" href="mobile-styles.css">
-</head>
-
+    
 </head>
 <body>
 <audio autoplay loop>
@@ -35,10 +32,10 @@
 </div>
 
 <!-- Research Tree Modal -->
-<div id="research-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeResearchTree()">&times;</span>
-        <h2>Research Tree</h2>
+<div id="research-modal" class="modal" style="display: none;">
+    <div class="modal-content" style="background-color: #fefefe; margin: auto; padding: 20px; border: 1px solid #888; width: 70%;">
+        <span class="close" onclick="closeResearchTree()" style="color: #aaa; float: right; font-size: 28px; font-weight: bold;">&times;</span>
+         <h2>Research Tree</h2>
         <p>Click on the nodes to unlock various upgrades:</p>
         <ul>
             <li>
@@ -59,7 +56,7 @@
             <li>
                 Nano-Scale Engineering
                 <button class="modal-button" onclick="startResearch('nanoScaleEngineering', 2000)">Research (Cost: 2000)</button>
-                <p>Refine nano-scale engineering, increasing passive score generation rate by 5 points per second and click value by 5.</p>
+                <p>Utilize nano-scale engineering, increasing passive score generation rate by 5 points per second and click value by 5.</p>
             </li>
             <li>
                 Optimized Energy Transfer
@@ -74,38 +71,22 @@
             <li>
                 Temporal Manipulation
                 <button class="modal-button" onclick="startResearch('temporalManipulation', 3500)">Research (Cost: 3500)</button>
-                <p>Manipulate temporal flow, increasing passive score generation rate by 50 points per second and click value by 50.</p>
+                <p>Master temporal manipulation techniques, increasing passive score generation rate by 50 points per second and click value by 50.</p>
             </li>
             <li>
                 Transcendental Synthesis
                 <button class="modal-button" onclick="startResearch('transcendentalSynthesis', 4000)">Research (Cost: 4000)</button>
-                <p>Synthesize transcendental materials, increasing passive score generation rate by 100 points per second and click value by 100.</p>
+                <p>Achieve transcendental synthesis, increasing passive score generation rate by 100 points per second and click value by 100.</p>
             </li>
             <li>
                 Galactic Expansion
                 <button class="modal-button" onclick="startResearch('galacticExpansion', 4500)">Research (Cost: 4500)</button>
-                <p>Expand across the galaxy, increasing passive score generation rate by 200 points per second and click value by 200.</p>
+                <p>Expand your galactic presence, increasing passive score generation rate by 200 points per second and click value by 200.</p>
             </li>
             <li>
                 Hyperspace Navigation
                 <button class="modal-button" onclick="startResearch('hyperspaceNavigation', 5000)">Research (Cost: 5000)</button>
-                <p>Navigate hyperspace realms, increasing passive score generation rate by 500 points per second and click value by 500.</p>
-            </li>
-            <!-- Add more research nodes here -->
-            <li>
-                Quantum Entanglement
-                <button class="modal-button" onclick="startResearch('quantumEntanglement', 5500)">Research (Cost: 5500)</button>
-                <p>Utilize quantum entanglement, increasing passive score generation rate by 1000 points per second and click value by 1000.</p>
-            </li>
-            <li>
-                Subspace Manipulation
-                <button class="modal-button" onclick="startResearch('subspaceManipulation', 6000)">Research (Cost: 6000)</button>
-                <p>Master subspace manipulation, increasing passive score generation rate by 2000 points per second and click value by 2000.</p>
-            </li>
-            <li>
-                Hypernova Harnessing
-                <button class="modal-button" onclick="startResearch('hypernovaHarnessing', 6500)">Research (Cost: 6500)</button>
-                <p>Harness the power of hypernovae, increasing passive score generation rate by 5000 points per second and click value by 5000.</p>
+                <p>Master hyperspace navigation, increasing passive score generation rate by 500 points per second and click value by 500.</p>
             </li>
         </ul>
     </div>
