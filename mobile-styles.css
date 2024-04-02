@@ -1,0 +1,21 @@
+/* mobile-styles.css */
+@media screen and (max-width: 600px) {
+  /* Adjust modal width and margins */
+  .modal-content {
+    width: 80%;
+    margin: 10% auto;
+  }
+
+  /* Adjust font sizes */
+  .modal-content h2 {
+    font-size: 1.5rem;
+  }
+
+  .modal-content p {
+    font-size: 1rem;
+  }
+
+  .modal-button {
+    font-size: 0.8rem;
+  }
+}
