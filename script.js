@@ -17,7 +17,7 @@ const researchNodes = {
 };
 
 function formatNumber(num) {
-    if (num < 1000) return num.toString();
+    if (num < 1000) return num.toFixed(1);
     if (num < 1000000) return (num / 1000).toFixed(1) + 'K';
     if (num < 1000000000) return (num / 1000000).toFixed(1) + 'M';
     if (num < 1000000000000) return (num / 1000000000).toFixed(1) + 'B';
@@ -53,7 +53,7 @@ function buyAutoGenerator(event) {
     event.stopPropagation();
     if (score >= 100) {
         score -= 100;
-        passivePointsPerSecond += 1;
+        passivePointsPerSecond += 0.1; // Increase passive points per second by 0.1
         updateUI();
         saveGame();
     }
@@ -94,7 +94,7 @@ function applyResearchEffect(nodeName) {
     // Placeholder research effects
     switch (nodeName) {
         case 'improvedParticleDetection':
-            passivePointsPerSecond += 2;
+            passivePointsPerSecond += 0.2; // Increase passive points per second by 0.2
             break;
         case 'enhancedParticleAcceleration':
             clickValue += 2;
@@ -103,31 +103,31 @@ function applyResearchEffect(nodeName) {
             score *= 2;
             break;
         case 'nanoScaleEngineering':
-            passivePointsPerSecond += 5;
+            passivePointsPerSecond += 0.5; // Increase passive points per second by 0.5
             clickValue += 5;
             break;
         case 'optimizedEnergyTransfer':
-            passivePointsPerSecond += 10;
+            passivePointsPerSecond += 1; // Increase passive points per second by 1
             clickValue += 10;
             break;
         case 'multiDimensionalAnalysis':
-            passivePointsPerSecond += 20;
+            passivePointsPerSecond += 2; // Increase passive points per second by 2
             clickValue += 20;
             break;
         case 'temporalManipulation':
-            passivePointsPerSecond += 50;
+            passivePointsPerSecond += 5; // Increase passive points per second by 5
             clickValue += 50;
             break;
         case 'transcendentalSynthesis':
-            passivePointsPerSecond += 100;
+            passivePointsPerSecond += 10; // Increase passive points per second by 10
             clickValue += 100;
             break;
         case 'galacticExpansion':
-            passivePointsPerSecond += 200;
+            passivePointsPerSecond += 20; // Increase passive points per second by 20
             clickValue += 200;
             break;
         case 'hyperspaceNavigation':
-            passivePointsPerSecond += 500;
+            passivePointsPerSecond += 50; // Increase passive points per second by 50
             clickValue += 500;
             break;
         default:
@@ -137,7 +137,7 @@ function applyResearchEffect(nodeName) {
 
 function updateUI() {
     document.getElementById('score-display').innerText = `Score: ${formatNumber(score)}`;
-    document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${passivePointsPerSecond}`;
+    document.getElementById('auto-score-display').innerText = `Passive Points/Sec: ${formatNumber(passivePointsPerSecond)}`;
     document.getElementById('click-power-display').innerText = `Score Per Click: ${clickValue}`;
     document.getElementById('auto-generator').disabled = score < 100;
     document.getElementById('click-upgrade').disabled = score < 50;
@@ -148,7 +148,7 @@ function startAutoGeneration() {
         score += passivePointsPerSecond;
         updateUI();
         saveGame();
-    }, 1000);
+    }, 100);
 }
 
 function saveGame() {
