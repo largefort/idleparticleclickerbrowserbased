@@ -109,47 +109,6 @@ function startResearch(nodeName, nodeCost) {
 
 function applyResearchEffect(nodeName) {
     // Placeholder research effects
-    switch (nodeName) {
-        case 'improvedParticleDetection':
-            passivePointsPerSecond += 0.2; // Increase passive points per second by 0.2
-            break;
-        case 'enhancedParticleAcceleration':
-            clickValue += 2;
-            break;
-        case 'advancedQuantumComputing':
-            score *= 2;
-            break;
-        case 'nanoScaleEngineering':
-            passivePointsPerSecond += 0.5; // Increase passive points per second by 0.5
-            clickValue += 5;
-            break;
-        case 'optimizedEnergyTransfer':
-            passivePointsPerSecond += 1; // Increase passive points per second by 1
-            clickValue += 10;
-            break;
-        case 'multiDimensionalAnalysis':
-            passivePointsPerSecond += 2; // Increase passive points per second by 2
-            clickValue += 20;
-            break;
-        case 'temporalManipulation':
-            passivePointsPerSecond += 5; // Increase passive points per second by 5
-            clickValue += 50;
-            break;
-        case 'transcendentalSynthesis':
-            passivePointsPerSecond += 10; // Increase passive points per second by 10
-            clickValue += 100;
-            break;
-        case 'galacticExpansion':
-            passivePointsPerSecond += 20; // Increase passive points per second by 20
-            clickValue += 200;
-            break;
-        case 'hyperspaceNavigation':
-            passivePointsPerSecond += 50; // Increase passive points per second by 50
-            clickValue += 500;
-            break;
-        default:
-            break;
-    }
 }
 
 function updateUI() {
