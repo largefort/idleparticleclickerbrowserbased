@@ -1,8 +1,8 @@
 let score = 0;
 let passivePointsPerSecond = 0;
 let clickValue = 1;
+let currentBackgroundImage = ''; // Track current background image
 
-// Define research nodes
 const researchNodes = {
     improvedParticleDetection: { name: 'Improved Particle Detection', cost: 500 },
     enhancedParticleAcceleration: { name: 'Enhanced Particle Acceleration', cost: 1000 },
@@ -14,6 +14,24 @@ const researchNodes = {
     transcendentalSynthesis: { name: 'Transcendental Synthesis', cost: 4000 },
     galacticExpansion: { name: 'Galactic Expansion', cost: 4500 },
     hyperspaceNavigation: { name: 'Hyperspace Navigation', cost: 5000 }
+};
+
+const seasonalEvents = {
+    christmas: {
+        name: 'Christmas Event',
+        startTime: new Date('December 1, 2024 00:00:00 GMT'),
+        endTime: new Date('December 31, 2024 23:59:59 GMT'),
+        modifier: { clickValue: 2, passivePointsPerSecond: 2 }, // Double points during Christmas
+        backgroundImage: 'christmas_background.jpg' // Background image for Christmas event
+    },
+    easter: {
+        name: 'Easter Event',
+        startTime: new Date('April 1, 2024 00:00:00 GMT'),
+        endTime: new Date('April 7, 2024 23:59:59 GMT'),
+        modifier: { clickValue: 3 }, // Triple click value during Easter
+        backgroundImage: 'easter_background.jpg' // Background image for Easter event
+    },
+    // Add more seasonal events here
 };
 
 function formatNumber(num) {
@@ -80,7 +98,6 @@ function closeResearchTree() {
 function startResearch(nodeName, nodeCost) {
     if (score >= nodeCost) {
         score -= nodeCost;
-        // Apply research effect based on node name
         applyResearchEffect(nodeName);
         console.log(`Researching ${researchNodes[nodeName].name}`);
         updateUI();
@@ -148,7 +165,7 @@ function startAutoGeneration() {
         score += passivePointsPerSecond;
         updateUI();
         saveGame();
-    }, 100);
+    }, 1000);
 }
 
 function saveGame() {
@@ -167,18 +184,37 @@ function loadGame() {
     }
 }
 
+function applySeasonalEvent() {
+    const currentDate = new Date();
+    for (const eventName in seasonalEvents) {
+        const event = seasonalEvents[eventName];
+        if (currentDate >= event.startTime && currentDate <= event.endTime) {
+            applyModifier(event.modifier);
+            currentBackgroundImage = event.backgroundImage; // Set current background image
+            console.log(`Seasonal event "${event.name}" active.`);
+            return; // Apply only one event at a time
+        }
+    }
+}
+
+function applyModifier(modifier) {
+    clickValue *= modifier.clickValue || 1;
+    passivePointsPerSecond *= modifier.passivePointsPerSecond || 1;
+}
+
 document.addEventListener('DOMContentLoaded', function() {
     loadGame();
+    applySeasonalEvent(); // Apply seasonal event modifiers
     updateUI();
     startAutoGeneration();
     particlesJS('particles-js', {
         particles: {
             number: { value: 80, density: { enable: true, value_area: 800 } },
-            color: { value: "#ffffff" },
+            color: { value: "#00ff00" },
             shape: { type: "circle", stroke: { width: 0, color: "#000000" } },
             opacity: { value: 0.5, anim: { enable: false } },
             size: { value: 3, random: true, anim: { enable: false } },
-            line_linked: { enable: true, distance: 150, color: "#ffffff", opacity: 0.4, width: 1 },
+            line_linked: { enable: true, distance: 150, color: "#00ff00", opacity: 0.4, width: 1 },
             move: { enable: true, speed: 6, direction: "none", random: false, straight: false, out_mode: "out", bounce: false, attract: { enable: false, rotateX: 600, rotateY: 1200 } },
         },
         interactivity: {
@@ -196,6 +232,14 @@ document.addEventListener('DOMContentLoaded', function() {
                 remove: { particles_nb: 2 }
             }
         },
-        retina_detect: true
+        retina_detect: true,
+        // Set initial background image based on current seasonal event
+        background: {
+            color: "#000000",
+            image: currentBackgroundImage, // Set initial background image
+            position: "50% 50%",
+            repeat: "no-repeat",
+            size: "cover"
+        }
     });
 });
