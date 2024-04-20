@@ -7,6 +7,33 @@
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;700;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" type="text/css" href="styles.css">
     <link rel="stylesheet" type="text/css" href="mobile-styles.css"> <!-- Mobile-specific styles -->
+
+    <!-- Adding styles specifically for TV -->
+    <style>
+        /* Adjustments for TV */
+        body {
+            font-size: 24px; /* Increase font size for better readability on TV */
+            position: relative;
+        }
+
+        /* Make buttons and elements bigger for better navigation on TV */
+        button, .modal-button {
+            font-size: 1.5em;
+            padding: 10px 20px;
+            margin: 10px;
+        }
+
+        /* Cursor style */
+        #cursor {
+            position: absolute;
+            width: 20px;
+            height: 20px;
+            background-color: #00008b; /* Dark blue color */
+            border-radius: 50%;
+            pointer-events: none; /* Make sure cursor doesn't interfere with button clicks */
+            z-index: 9999; /* Ensure cursor is above other elements */
+        }
+    </style>
 </head>
 <body>
 <audio autoplay loop>
@@ -32,18 +59,9 @@
     </div>
 </div>
 
-<!-- AdSense Code -->
-<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
-<ins class="adsbygoogle"
-     style="display:block"
-     data-ad-client="ca-pub-5816082932921993" <!-- Replace XXXXXXXXXXXXXXXX with your AdSense Publisher ID -->
-     data-ad-slot="4216354283" <!-- Replace XXXXXXXXXX with your Ad Slot ID -->
-     data-ad-format="auto"></ins>
-<script>
-     (adsbygoogle = window.adsbygoogle || []).push({});
-</script>
-<!-- End of AdSense Code -->
-
+<!-- Cursor -->
+<div id="cursor"></div>
+  
 <!-- Research Tree Modal -->
 <div id="research-modal" class="modal">
     <div class="modal-content">
@@ -117,7 +135,26 @@
 <script src="js/index.js"></script>
 <script src="script.js"></script>
 <script>
-    // Your JavaScript code here
+    // Move cursor based on Android TV remote stick input
+    document.addEventListener('keydown', function(event) {
+        const cursor = document.getElementById('cursor');
+        const step = 20; // Change this value to adjust cursor movement speed
+
+        switch(event.key) {
+            case 'ArrowUp':
+                cursor.style.top = (parseFloat(cursor.style.top) || 0) - step + 'px';
+                break;
+            case 'ArrowDown':
+                cursor.style.top = (parseFloat(cursor.style.top) || 0) + step + 'px';
+                break;
+            case 'ArrowLeft':
+                cursor.style.left = (parseFloat(cursor.style.left) || 0) - step + 'px';
+                break;
+            case 'ArrowRight':
+                cursor.style.left = (parseFloat(cursor.style.left) || 0) + step + 'px';
+                break;
+        }
+    });
 </script>
 </body>
 </html>
